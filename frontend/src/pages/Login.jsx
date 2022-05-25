@@ -1,6 +1,9 @@
 import React from 'react'
+import { useContext } from 'react'
 import { useState } from 'react'
 import { FaSignInAlt } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../Context/Auth/AuthContext'
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -8,7 +11,11 @@ const Login = () => {
         password:'',
     })
 
-    const {name,email,password,password2}=formData
+    const {login}=useContext(AuthContext)
+
+    const navigate=useNavigate()
+
+    const {email,password}=formData
 
     const onChange=(e)=>{
         setFormData((prevState)=>({
@@ -19,13 +26,18 @@ const Login = () => {
 
     const onSubmit =(e)=>{
         e.preventDefault()
+        const userData={
+            email,password
+        }
+        login(userData)
+        navigate('/')
     }
 
     return (
         <>
         <section className="heading">
             <h1>
-                <FaSignInAlt/> Register
+                <FaSignInAlt/> Login
             </h1>
             <p>Login and start setting goals</p>
         </section>

@@ -1,8 +1,17 @@
 import React from 'react'
 import { useState } from 'react'
 import { FaUser } from 'react-icons/fa'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../Context/Auth/AuthContext'
+import { useContext } from 'react'
+import { useEffect } from 'react'
+import Spinner from '../components/Spinner'
 
 const Register = () => {
+    const navigate=useNavigate()
+    const {user,isError,isSuccess,isLoading,message,register}=useContext(AuthContext)    
+    
     const [formData, setFormData] = useState({
         name:'',
         email:'',
@@ -11,6 +20,16 @@ const Register = () => {
     })
 
     const {name,email,password,password2}=formData
+
+    useEffect(()=>{
+        if(isError){
+            toast.error(message)
+        }
+        if(isSuccess){
+            navigate('/')
+        }
+
+    },[user,isError,isSuccess,message,navigate])
 
     const onChange=(e)=>{
         setFormData((prevState)=>({
@@ -21,6 +40,22 @@ const Register = () => {
 
     const onSubmit =(e)=>{
         e.preventDefault()
+        if(password!==password2){
+            toast.error('Passwords do not match')
+        }else{
+            const userData={
+                name,
+                email,
+                password
+            }
+            // console.log(userData)
+            register(userData)
+        }
+        navigate('/login')
+    }
+
+    if(isLoading){
+        return <Spinner/>
     }
 
     return (
