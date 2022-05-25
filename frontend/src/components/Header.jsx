@@ -10,7 +10,7 @@ const Header = () => {
     // const {user}=state===undefined ? {} : state
 
     const navigate=useNavigate()
-    console.log(user)
+    // console.log(user)
 
     const handleLogout = ()=>{
         logout()
